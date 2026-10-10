@@ -357,8 +357,11 @@
             resDescription.textContent = data.description;
 
             const isDark = document.documentElement.classList.contains('dark');
+            
+            // Obsługa obu wariantów nazw pól: isHalal (API/Gemini) oraz is_halal (baza danych SQLite)
+            const isHalal = data.isHalal !== undefined ? data.isHalal : data.is_halal;
 
-            if (data.isHalal === true) {
+            if (isHalal === true) {
                 if (isDark) {
                     resultCard.className = "rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between bg-emerald-950/45 border-emerald-600/40 shadow-xl shadow-emerald-950/50";
                 } else {
@@ -366,7 +369,7 @@
                 }
                 statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30";
                 statusBadge.textContent = "✓ HALAL (Dozwolone)";
-            } else if (data.isHalal === false) {
+            } else if (isHalal === false) {
                 if (isDark) {
                     resultCard.className = "rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between bg-red-950/45 border-red-600/40 shadow-xl shadow-red-950/50";
                 } else {
@@ -375,14 +378,14 @@
                 statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30";
                 statusBadge.textContent = "✕ HARAM (Niedozwolone)";
             } else {
-                // Neutral error state
+                // Stan błędu / neutralny
                 if (isDark) {
                     resultCard.className = "rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between bg-amber-950/40 border-amber-600/40 shadow-xl shadow-amber-950/50";
                 } else {
                     resultCard.className = "rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between bg-amber-50 border-amber-300 shadow-xl shadow-amber-100/50";
                 }
                 statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30";
-                statusBadge.textContent = "⚠ BŁĄD / BRAK W BAZIE";
+                statusBadge.textContent = " BŁĄD / BRAK W BAZIE";
             }
 
             resultContainer.classList.remove('hidden');
